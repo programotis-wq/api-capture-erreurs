@@ -1,0 +1,56 @@
+
+* { box-sizing: border-box; }
+
+
+body {
+margin: 0;
+padding: 16px;
+font-family: system-ui, sans-serif;
+background: #ffffff;
+color: #1f2937;
+}
+
+h1 { font-size: 1.2rem; margin: 0 0 6px; }
+
+
+
+.intro { font-size: .9rem; color: #4b5563; margin: 0 0 16px; }
+
+
+form {
+display: grid;
+grid-template-columns: 1fr;          /* mobile : une colonne */
+gap: 12px;
+}
+
+
+label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: 4px; }
+
+
+input, select {
+width: 100%;
+padding: 10px;
+font-size: 1rem;
+border: 1px solid #cbd5e1;
+border-radius: 6px;
+}
+
+
+.exemple { font-size: .8rem; color: #6b7280; margin-top: 2px; }
+.boutons { display: flex; gap: 8px; justify-content: flex-end; }
+button { padding: 10px 16px; font-size: 1rem; border-radius: 6px; cursor: pointer; }
+.principal { background: #16a34a; color: #fff; border: none; }
+.secondaire { background: #fff; color: #374151; border: 1px solid #cbd5e1; }
+
+.message-erreur {
+  color: #b00020;
+  font-weight: bold;
+}
+
+/* Ordinateur : deux colonnes */
+
+@media (min-width: 560px) {
+form { grid-template-columns: 1fr 2fr; }
+.pleine-largeur { grid-column: 1 / -1; }
+}
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test du widget (site client)</title>
+</head>
+<body>
+  <h1>Créer un profil (page de test)</h1>
+
+  <form id="formProfil" action="#" method="get">
+    <p>
+      <label for="nom">Nom</label><br>
+      <input id="nom" name="nom" required>
+    </p>
+    <p>
+      <label for="address">Adresse (numéro et rue)</label><br>
+      <input id="address" name="address" size="50" required>
+    </p>
+    <p>
+      <label for="city">Ville</label><br>
+      <input id="city" name="city" required>
+    </p>
+    <p>
+      <label for="province">Province</label><br>
+      <select id="province" name="province" required>
+        <option value="">Choisir…</option>
+        <option value="QC">Québec</option>
+        <option value="ON">Ontario</option>
+        <option value="NB">Nouveau-Brunswick</option>
+      </select>
+    </p>
+    <p>
+      <label for="postalCode">Code postal</label><br>
+      <input id="postalCode" name="postalCode" maxlength="7" required>
+    </p>
+    <button type="submit">Créer mon profil</button>
+  </form>
+
+  <!-- Imite le site du Depanneur : son propre submit avec new FormData -->
+  <script>
+    document.getElementById("formProfil").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target));
+      console.log("[Site client] Envoi simulé vers /clients :", data);
+    });
+  </script>
+
+  <!-- La seule balise que le site client doit ajouter -->
+  <script src="http://localhost:3000/widget.js"
+          data-cle="test-cle-api-12345"
+          data-champ="address"
+          data-champ-ville="city"
+          data-champ-province="province"
+          data-champ-code-postal="postalCode"></script>
+</body>
+</html>
