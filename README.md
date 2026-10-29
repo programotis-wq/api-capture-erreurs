@@ -39,6 +39,10 @@ Le widget `widget.js` s'ajoute au formulaire du client et gère ces échanges au
 
 Les fichiers nécessaires à l'installation et la procédure sont disponibles sur demande.
 
+## Évolution
+
+Le projet est en développement continu.
+
 ## Auteur
 
 Sylvain Otis
