@@ -31,23 +31,13 @@
 
   //------ Champ d'adresse et formulaire du site client ------//
 
-  const champ = document.querySelector(`[name="${nomChamp}"]`);
-  if (!champ) {
-    console.error(
-      `[Capture erreurs] Aucun champ avec name="${nomChamp}" dans la page.`,
-    );
-    return;
-  }
+ let champ;
+  let formulaire;
+  let champVille;
+  let champProvince;
+  let champCodePostal;
 
-  // Le formulaire qui contient le champ d'adresse
   
-  const formulaire = champ.form;
-  if (!formulaire) {
-    console.error(
-      `[Capture erreurs] Le champ "${nomChamp}" n'est pas dans un <form>.`,
-    );
-    return;
-  }
 
   //------ Champs separes (facultatifs) ------//
 
@@ -63,10 +53,19 @@
     return element;
   }
 
-  const champVille = trouverChamp(nomChampVille);
-  const champProvince = trouverChamp(nomChampProvince);
-  const champCodePostal = trouverChamp(nomChampCodePostal);
+    // Cherche le champ d'adresse dans le formulaire qui vient d'être envoyé
+  function chercherChamps(form) {
+    const trouve = form.querySelector(`[name="${nomChamp}"]`);
+    if (!trouve) return false;
+    champ = trouve;
+    formulaire = form;
+    champVille = trouverChamp(nomChampVille);
+    champProvince = trouverChamp(nomChampProvince);
+    champCodePostal = trouverChamp(nomChampCodePostal);
+    return true;
+  }
 
+  
   // Adresse complete envoyee a l'API : rue + ville + province + code postal
   function adresseComplete() {
     return [champ, champVille, champProvince, champCodePostal]
@@ -179,12 +178,13 @@
   document.addEventListener(
     "submit",
     async (event) => {
-      if (event.target !== formulaire) return; // autre formulaire de la page
-
       if (laisserPasser) {                     // renvoi du widget : on laisse passer
         remiseFaite = true;
         return;
       }
+
+      // Autre formulaire de la page (sans le champ d'adresse) : on ne fait rien
+      if (!chercherChamps(event.target)) return;
 
       if (!formulaire.checkValidity()) return; // le site client affiche ses erreurs
 
