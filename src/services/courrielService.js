@@ -72,7 +72,8 @@ async function envoyerResumeSignalements(destinataire, nomSite, signalements) {
         ? `[À vérifier : l'adresse tapée n'est peut-être pas exacte, le niveau de fiabilité de l'adresse est de ${Math.round(a.confiance * 100)} % (adresse tapée : « ${a.saisie} »)]`
       : '[Saisie manuelle]';
     return `${i + 1}. ${etiquette} ${a.numero ?? '?'} ${a.rue ?? '?'}, ${a.ville ?? '?'}`
-         + ` (${a.province ?? '?'}) ${a.codePostal ?? '?'} - reçue le ${date}`;
+         + ` (${a.province ?? '?'}) ${a.codePostal ?? '?'} - reçue le ${date}`
+         + (a.reference ? ` - référence : ${a.reference}` : '');
   }).join('\n');
 
   const nbAVerifier = signalements.filter(s => s.adresse_saisie.type === 'a_verifier').length;
@@ -94,6 +95,7 @@ async function envoyerResumeSignalements(destinataire, nomSite, signalements) {
 }
 
 // Courriel immediat a chaque adresse saisie a la main dans l'iframe
+// Courriel immediat a chaque adresse saisie a la main dans l'iframe
 async function envoyerCourrielSaisieManuelle(destinataire, nomSite, adresse) {
   const info = await transporter.sendMail({
     from: `"API Capture Erreurs" <${process.env.SMTP_USER}>`,
@@ -102,8 +104,8 @@ async function envoyerCourrielSaisieManuelle(destinataire, nomSite, adresse) {
     text: `Bonjour,\n\n`
         + `Un client du site ${nomSite} vient de saisir son adresse à la main, `
         + `car elle n'a pas pu être trouvée automatiquement :\n\n`
-        // MODIF : le pays est ajoute a la fin de l'adresse
         + `${adresse.numero} ${adresse.rue}, ${adresse.ville} (${adresse.province}) ${adresse.codePostal}, ${adresse.pays}\n\n`
+        + (adresse.reference ? `Référence du formulaire : ${adresse.reference}\n\n` : '')
         + `Nous vous invitons à vérifier cette adresse auprès du client `
         + `(nom, téléphone, courriel) avant de l'utiliser.\n\n`
         + `Cette adresse figurera aussi dans le résumé quotidien de 8 h.\n\n`
